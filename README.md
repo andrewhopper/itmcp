@@ -143,6 +143,8 @@ ITMCP uses Docker to create a secure sandbox for command execution:
 
 ### MCP Configuration
 
+#### Claude Desktop Configuration
+
 To use ITMCP with Claude desktop, add the following to your `config.json` file:
 
 ```json
@@ -160,6 +162,89 @@ To use ITMCP with Claude desktop, add the following to your `config.json` file:
   ]
 }
 ```
+
+#### Cline Configuration
+
+For Cline AI, a more detailed configuration is provided in the `mcp-config.json` file included in this repository:
+
+```json
+{
+    "servers": [
+        {
+            "name": "itmcp",
+            "command": [
+                "python",
+                "-m",
+                "itmcp.server"
+            ],
+            "environment": {
+                "USE_DOCKER": "true",
+                "DOCKER_CONTAINER": "itmcp_container",
+                "ALLOWED_HOSTS": "localhost,127.0.0.1,yahoo.com,firewall.local",
+                "ALLOWED_DIRECTORIES": "/tmp,/var/log",
+                "ALLOWED_REMOTE_COMMANDS": "ls,cat,grep,ping,ssh,nslookup,dig,telnet,tcpdump,ps,top,head,tail"
+            },
+            "description": "Secure network administration tools running in a Docker sandbox",
+            "tools": [
+                {
+                    "name": "ssh_tool",
+                    "description": "Connect to a target via SSH"
+                },
+                {
+                    "name": "ping_tool",
+                    "description": "Ping a host to check connectivity"
+                },
+                {
+                    "name": "nslookup_tool",
+                    "description": "Perform DNS lookup on a hostname or IP address"
+                },
+                {
+                    "name": "telnet_tool",
+                    "description": "Test TCP connectivity to a host and port"
+                },
+                {
+                    "name": "dig_tool",
+                    "description": "Perform DNS lookup with dig command"
+                },
+                {
+                    "name": "tcpdump_tool",
+                    "description": "Capture network packets (limited time)"
+                },
+                {
+                    "name": "ps_tool",
+                    "description": "List running processes"
+                },
+                {
+                    "name": "cat_tool",
+                    "description": "Display content of a file"
+                },
+                {
+                    "name": "top_tool",
+                    "description": "Display system processes (snapshot)"
+                },
+                {
+                    "name": "grep_tool",
+                    "description": "Search for patterns in files"
+                },
+                {
+                    "name": "head_tool",
+                    "description": "Display the beginning of a file"
+                },
+                {
+                    "name": "tail_tool",
+                    "description": "Display the end of a file"
+                }
+            ]
+        }
+    ]
+}
+```
+
+To use this configuration with Cline:
+
+1. Copy the `mcp-config.json` file to your Cline configuration directory
+2. Start Cline with the `--mcp-config` flag pointing to this file
+3. The ITMCP tools will be available for use in your Cline sessions
 
 ### Example 1: Ping a Host
 
