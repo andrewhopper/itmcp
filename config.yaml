@@ -34,4 +34,34 @@ allowed_remote_commands:
   - ifconfig
   - ip
   - netstat
-  - ps 
+  - ps
+  - top
+  - ping
+  - traceroute
+  - nslookup
+  - dig
+  # Additional diagnostic commands
+  - free
+  - vmstat
+  - iostat
+  - htop
+  - iotop
+  - sar
+  - lsof
+  - ss
+  - journalctl
+  - dmesg
+  - w
+  - last
+  - find
+  - env
+  - ulimit
+  - sysctl -a
+  - stat
+  - file
+  - kubectl get
+  - kubectl describe
+  - docker ps
+  - docker images
+  - docker logs
+  - systemctl status 
