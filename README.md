@@ -224,6 +224,15 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
+## Author
+
+**Andrew Hopper**
+
+- Email: hopperab@gmail.com
+- Twitter: [x.com/andrewhopper](https://x.com/andrewhopper)
+- Website: [andyhop.316.dev](https://andyhop.316.dev)
+- LinkedIn: [linkedin.com/in/andrewhopper](https://linkedin.com/in/andrewhopper)
+
 ## Security Considerations
 
 ITMCP is designed with security in mind, but proper configuration is essential:
