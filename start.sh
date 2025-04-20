@@ -42,6 +42,6 @@ export DOCKER_CONTAINER=itmcp_container
 
 # Start the MCP server locally (connecting to the Docker container)
 echo "Starting MCP server..."
-python3 src/pandoras_shell/executor.py
+python3 src/itmcp/executor.py
 
 echo "MCP server stopped." 

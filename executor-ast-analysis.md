@@ -3,6 +3,58 @@
 This document contains the AST for the main `executor.py` file, which is the core of Pandora's Shell.
 
 ```python
+import os
+import subprocess
+import asyncio
+import re
+import ipaddress
+import logging
+import shlex
+from typing import List, Optional, Dict, Any, Union
+from mcp.server.models import InitializationOptions
+import mcp.types as types
+from mcp.server import NotificationOptions, Server
+import mcp.server.stdio
+import dotenv
+from pathlib import Path
+
+# Load environment variables from .env file
+dotenv.load_dotenv(dotenv_path=Path(__file__).parent.parent.parent / ".env")
+
+# Configure logging
+logging.basicConfig(
+    filename='itmcp.log',
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
+logger = logging.getLogger('itmcp')
+
+# Docker execution configuration
+USE_DOCKER = os.environ.get("USE_DOCKER", "true").lower() == "true"
+DOCKER_CONTAINER = os.environ.get("DOCKER_CONTAINER", "itmcp_container")
+logger.info(f"Docker execution: {'Enabled' if USE_DOCKER else 'Disabled'}")
+logger.info(f"Docker container: {DOCKER_CONTAINER if USE_DOCKER else 'N/A'}")
+
+# Load whitelist configurations from environment variables
+def get_list_from_env(env_var_name: str, default: List[str] = None) -> List[str]:
+    """Parse comma-separated environment variable into a list."""
+    value = os.environ.get(env_var_name, "")
+    if not value and default is not None:
+        return default
+    return [item.strip() for item in value.split(",") if item.strip()]
+
+# Load whitelist configurations
+ALLOWED_HOSTS = get_list_from_env("ALLOWED_HOSTS", ["localhost", "127.0.0.1"])
+ALLOWED_DIRECTORIES = get_list_from_env("ALLOWED_DIRECTORIES", ["/tmp"])
+ALLOWED_REMOTE_COMMANDS = get_list_from_env("ALLOWED_REMOTE_COMMANDS", ["ls", "cat"])
+
+# Log loaded configurations
+logger.info(f"Loaded {len(ALLOWED_HOSTS)} allowed hosts")
+logger.info(f"Loaded {len(ALLOWED_DIRECTORIES)} allowed directories")
+logger.info(f"Loaded {len(ALLOWED_REMOTE_COMMANDS)} allowed remote commands")
+
+server = Server("itmcp")
+
 Module(
   body=[
     Import(

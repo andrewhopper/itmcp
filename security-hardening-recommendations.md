@@ -1,7 +1,7 @@
-# Security Hardening Recommendations for Pandora's Shell
+# Security Hardening Recommendations for itmcp
 
 ## Overview
-This document outlines security vulnerabilities identified in the Pandora's Shell MCP server and provides recommendations for hardening the application. Pandora's Shell allows AI assistants to execute terminal commands on a user's system, which introduces significant security risks.
+This document outlines security vulnerabilities identified in the itmcp server and provides recommendations for hardening the application. itmcp allows AI assistants to execute terminal commands on a user's system, which introduces significant security risks.
 
 ## Identified Vulnerabilities
 
@@ -187,4 +187,4 @@ timeout = int(os.environ.get("CMD_TIMEOUT", DEFAULT_TIMEOUT))
 8. **Dependency Management**: Regularly update dependencies to address security vulnerabilities.
 
 ## Conclusion
-While Pandora's Shell is designed for flexibility in allowing AI assistants to execute commands, implementing these security hardening measures will significantly reduce the risk of misuse or exploitation. The tool should continue to include strong warnings about its intended use in controlled environments only. 
+While itmcp is designed for flexibility in allowing AI assistants to execute commands, implementing these security hardening measures will significantly reduce the risk of misuse or exploitation. The tool should continue to include strong warnings about its intended use in controlled environments only. 

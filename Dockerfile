@@ -59,4 +59,4 @@ ENV ALLOWED_DIRECTORIES="/tmp/safe,/app/secrets"
 ENV ALLOWED_REMOTE_COMMANDS="ls,cat,grep,head,tail,df,du,uname,ps,top,ping,ssh,nslookup,dig,tcpdump,telnet"
 
 # Command to start the service
-CMD ["python3", "src/pandoras_shell/executor.py"] 
+CMD ["python3", "src/itmcp/executor.py"] 

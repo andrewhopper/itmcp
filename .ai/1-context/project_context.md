@@ -3,7 +3,7 @@ id: CTX-project-context-001
 created: 2025-04-20
 ---
 
-# Project Context Document ## 1. Project Overview - **Project Name**: Pandoras-Shell
+# Project Context Document ## 1. Project Overview - **Project Name**: itmcp
 - **Domain**: [Specify domain]
 - **Core Purpose**: [Describe the core purpose]
 - **Project Type**: [quick prototype | semi-production code | full production code]

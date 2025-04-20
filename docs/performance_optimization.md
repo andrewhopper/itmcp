@@ -5,11 +5,11 @@ created: 2023-05-22
 
 # Performance Optimization
 
-Pandora's Shell is designed to meet enterprise-level performance requirements, particularly focused on high scalability and rapid response times. This document outlines the performance targets, optimization strategies, and configuration recommendations.
+itmcp's Shell is designed to meet enterprise-level performance requirements, particularly focused on high scalability and rapid response times. This document outlines the performance targets, optimization strategies, and configuration recommendations.
 
 ## Performance Targets
 
-Pandora's Shell is built to achieve the following performance targets:
+itmcp's Shell is built to achieve the following performance targets:
 
 - **Scalability**: High (10,000+ concurrent users)
 - **Response Time**: 200ms or less
@@ -199,4 +199,4 @@ To consistently achieve the 200ms response time target:
 
 ## Conclusion
 
-Pandora's Shell is engineered to deliver enterprise-grade performance with high scalability and rapid response times. Through careful architecture, resource management, and configurable optimizations, the system can handle 10,000+ concurrent users while maintaining response times of 200ms or less. 
+itmcp's Shell is engineered to deliver enterprise-grade performance with high scalability and rapid response times. Through careful architecture, resource management, and configurable optimizations, the system can handle 10,000+ concurrent users while maintaining response times of 200ms or less. 
