@@ -1,0 +1,37 @@
+# Pandora's Shell Configuration
+
+# Allowed hosts configuration
+allowed_hosts:
+  - 192.168.0.1
+  - localhost
+  - 127.0.0.1
+  - example.com
+  - test-server.local
+
+# Allowed directories configuration
+allowed_directories:
+  - /tmp
+  - /var/log
+  - /home/admin/logs
+  - /etc/config
+  - /opt/data
+
+# Allowed remote commands configuration
+allowed_remote_commands:
+  - ls
+  - cat
+  - grep
+  - head
+  - tail
+  - df
+  - du
+  - uname
+  - uptime
+  - whoami
+  - id
+  - date
+  - hostname
+  - ifconfig
+  - ip
+  - netstat
+  - ps 

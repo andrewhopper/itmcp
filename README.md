@@ -117,7 +117,34 @@ An MCP server that empowers AI assistants to execute terminal commands on your s
 
 ## Configuration
 
-### Windows
+### Whitelist Configuration
+
+Pandora's Shell now uses a whitelist system to restrict which hosts, directories, and commands can be executed. These configurations are stored in a `.env` file in the project root directory.
+
+Create a `.env` file in the root of the project with the following parameters:
+
+```ini
+# Allowed hosts (comma-separated)
+ALLOWED_HOSTS=192.168.0.1,localhost,127.0.0.1,example.com
+
+# Allowed directories (comma-separated) 
+ALLOWED_DIRECTORIES=/tmp,/var/log,/home/admin/logs
+
+# Allowed remote commands (comma-separated)
+ALLOWED_REMOTE_COMMANDS=ls,cat,grep,head,tail,df,du,uname
+```
+
+If the `.env` file is not found or specific settings are missing, the system will default to a minimal set of safe values:
+- Allowed hosts: localhost, 127.0.0.1
+- Allowed directories: /tmp
+- Allowed remote commands: ls, cat
+
+These restrictions ensure that:
+1. SSH connections are only made to whitelisted hosts
+2. File operations only access whitelisted directories
+3. Remote commands are limited to a predefined set of safe operations
+
+### Claude Desktop Configuration
 
 Locate the correct configuration directory - try these paths in order:
 

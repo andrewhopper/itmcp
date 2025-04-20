@@ -1,0 +1,23 @@
+{
+  "projectName": "Pandoras-Shell",
+  "architecture": [],
+  "designPatterns": [
+    "Dependency Injection"
+  ],
+  "securityLevel": "Enterprise",
+  "securityFeatures": [
+    "Session Management",
+    "Audit Logging"
+  ],
+  "performance": {
+    "scalability": "High (10000+ users)",
+    "responseTime": "200ms"
+  },
+  "environments": [],
+  "environmentDetails": "local host only",
+  "guidelines": [
+    "Reference file IDs in documentation and code comments",
+    "Check folder-locks.md before modifying locked directories",
+    "Follow project conventions from .ai/1-context/project_conventions.md"
+  ]
+}

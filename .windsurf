@@ -1,0 +1,12 @@
+// Windsurf AI configuration for Pandoras-Shell
+
+/* Project Context */
+project_name = "Pandoras-Shell"
+architecture = []
+security_level = "Enterprise"
+performance_target = "200ms"
+
+/* Guidelines */
+documentation_structure = ".ai directory (Dot AI structure)"
+naming_convention = "ID-based (see .ai/1-context/project_conventions.md)"
+reference_style = "Use documentation IDs in comments"
