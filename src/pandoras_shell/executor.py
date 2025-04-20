@@ -24,6 +24,67 @@ logging.basicConfig(
 )
 logger = logging.getLogger('pandoras_shell')
 
+# Docker execution configuration
+USE_DOCKER = os.environ.get("USE_DOCKER", "true").lower() == "true"
+DOCKER_CONTAINER = os.environ.get("DOCKER_CONTAINER", "itmcp_container")
+logger.info(f"Docker execution: {'Enabled' if USE_DOCKER else 'Disabled'}")
+logger.info(f"Docker container: {DOCKER_CONTAINER if USE_DOCKER else 'N/A'}")
+
+# SSH credential handling
+SSH_CREDENTIALS_PATH = os.environ.get("SSH_CREDENTIALS_PATH", "/app/secrets/ssh_credentials.json")
+SSH_KEYS_PATH = os.environ.get("SSH_KEYS_PATH", "/app/secrets/keys")
+
+# Function to safely load SSH credentials
+def load_ssh_credentials():
+    """Load SSH credentials from the credentials file."""
+    try:
+        import json
+        if os.path.exists(SSH_CREDENTIALS_PATH):
+            with open(SSH_CREDENTIALS_PATH, 'r') as f:
+                return json.load(f)
+        else:
+            logger.warning(f"SSH credentials file not found: {SSH_CREDENTIALS_PATH}")
+            return {}
+    except Exception as e:
+        logger.error(f"Error loading SSH credentials: {str(e)}")
+        return {}
+
+# Function to get SSH key path for a specific target
+def get_ssh_key_for_target(target, user):
+    """Get the SSH key path for a specific target and user."""
+    credentials = load_ssh_credentials()
+    target_key = f"{user}@{target}"
+    
+    if target_key in credentials and "key_file" in credentials[target_key]:
+        key_name = credentials[target_key]["key_file"]
+        key_path = os.path.join(SSH_KEYS_PATH, key_name)
+        if os.path.exists(key_path):
+            return key_path
+    
+    # Look for default key
+    if "default" in credentials and "key_file" in credentials["default"]:
+        key_name = credentials["default"]["key_file"]
+        key_path = os.path.join(SSH_KEYS_PATH, key_name)
+        if os.path.exists(key_path):
+            return key_path
+    
+    return None
+
+# Function to get SSH password for a specific target
+def get_ssh_password_for_target(target, user):
+    """Get the SSH password for a specific target and user."""
+    credentials = load_ssh_credentials()
+    target_key = f"{user}@{target}"
+    
+    if target_key in credentials and "password" in credentials[target_key]:
+        return credentials[target_key]["password"]
+    
+    # Look for default password
+    if "default" in credentials and "password" in credentials["default"]:
+        return credentials["default"]["password"]
+    
+    return None
+
 # Load whitelist configurations from environment variables
 def get_list_from_env(env_var_name: str, default: List[str] = None) -> List[str]:
     """Parse comma-separated environment variable into a list."""
@@ -94,14 +155,36 @@ def execute_command(command: List[str], directory: str, timeout: int = 60) -> Di
     logger.info(f"Executing command: {' '.join(command)} in directory: {directory}")
     
     try:
-        result = subprocess.run(
-            command,
-            shell=False,  # More secure than shell=True
-            cwd=directory,
-            capture_output=True,
-            text=True,
-            timeout=timeout
-        )
+        if USE_DOCKER:
+            # Prepare command to run inside Docker container
+            docker_cmd = [
+                "docker", "exec",
+                "-w", directory,  # Set working directory inside container
+                DOCKER_CONTAINER
+            ]
+            
+            # Add the actual command to execute
+            docker_cmd.extend(command)
+            
+            logger.info(f"Routing command through Docker: {' '.join(docker_cmd)}")
+            
+            result = subprocess.run(
+                docker_cmd,
+                shell=False,
+                capture_output=True,
+                text=True,
+                timeout=timeout
+            )
+        else:
+            # Execute directly on host
+            result = subprocess.run(
+                command,
+                shell=False,  # More secure than shell=True
+                cwd=directory,
+                capture_output=True,
+                text=True,
+                timeout=timeout
+            )
         
         logger.info(f"Command completed with exit code: {result.returncode}")
         
@@ -455,9 +538,31 @@ async def handle_call_tool(
         if port != 22:
             cmd.extend(["-p", str(port)])
         
-        # Add identity file if specified
+        # Handle SSH authentication
         if identity_file:
-            cmd.extend(["-i", os.path.expanduser(identity_file)])
+            # User explicitly provided an identity file
+            identity_path = os.path.expanduser(identity_file)
+            cmd.extend(["-i", identity_path])
+        else:
+            # Look for stored key for this target
+            key_path = get_ssh_key_for_target(target, user)
+            if key_path:
+                cmd.extend(["-i", key_path])
+        
+        # Add options for non-interactive SSH
+        cmd.extend([
+            "-o", "BatchMode=no",
+            "-o", "StrictHostKeyChecking=no",
+            "-o", "UserKnownHostsFile=/dev/null"
+        ])
+        
+        # Check if we need to use password authentication
+        password = get_ssh_password_for_target(target, user)
+        if password:
+            # Use sshpass for password authentication
+            cmd_with_password = ["sshpass", "-p", password]
+            cmd_with_password.extend(cmd)
+            cmd = cmd_with_password
         
         # Add user@target
         cmd.append(f"{user}@{target}")

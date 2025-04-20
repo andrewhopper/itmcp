@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  itmcp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: itmcp_container
+    restart: unless-stopped
+    volumes:
+      - ./config:/app/config
+      - ./logs:/app/logs
+      - ./secrets:/app/secrets:ro # Read-only mount of secrets directory
+      - ~/.ssh:/home/executor/.ssh:ro # Read-only mount of SSH keys
+    environment:
+      - ALLOWED_HOSTS=localhost,127.0.0.1,example.com
+      - ALLOWED_DIRECTORIES=/tmp/safe,/app/logs,/app/secrets
+      - ALLOWED_REMOTE_COMMANDS=ls,cat,grep,head,tail,df,du,uname,ps,top,ping,ssh,nslookup,dig,tcpdump,telnet
+    networks:
+      - itmcp_network
+    ports:
+      - "9000:9000" # Expose port if needed for MCP
+
+networks:
+  itmcp_network:
+    driver: bridge
