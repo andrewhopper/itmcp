@@ -281,3 +281,7 @@ or
 ```text
 Can you list the files in my home directory? Which of them are larger than 200 MB?
 ```
+
+## Attribution
+
+This project is a fork of [Pandora's Shell](https://github.com/Zelaron/Pandoras-Shell) by Christian Hägg, used under the [MIT License](LICENSE). The original repository can be found at https://github.com/Zelaron/Pandoras-Shell.git.
