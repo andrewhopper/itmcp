@@ -1,3 +1,5 @@
+[![MseeP.ai Security Assessment Badge](https://mseep.net/pr/andrewhopper-itmcp-badge.png)](https://mseep.ai/app/andrewhopper-itmcp)
+
 # ITMCP
 
 Secure network administration tools for AI assistants through the Model Context Protocol (MCP).
